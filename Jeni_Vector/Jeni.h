@@ -1,4 +1,6 @@
 #include <iostream>
+#include<cstdlib>
+#include <new>
 
 using namespace std;
 
@@ -14,11 +16,15 @@ class Jeni
 
 private:
 
-    int vsize; //size of vector
+   unsigned int vsize; //size of vector
 
     T* vec_array;
 
     int capacity;  // number of elements the array can hold
+
+    void subsError();  // Handles subscripts out of range
+
+    void memError(); // Handles memory allocation errors
 
 
 
@@ -26,11 +32,10 @@ private:
 public:
     Jeni();
 
-    Jeni(int n); //one arg constructor
 
     Jeni(const Jeni &obj);//copy constructor
 
-    void _reserve(int n);
+    void v_reserve(int n);
 
     bool status(); // returns true if the stack is empty, or false otherwise.
 
@@ -41,23 +46,25 @@ public:
 
     void display();
 
-    unsigned int _size();
+    unsigned int v_size();
 
-    unsigned int _capacity();
+    unsigned int v_capacity();
 
-    void _resize(unsigned int n);
+    void v_resize(unsigned int n);
 
-    void _clear();
+    void v_clear();
 
-    T& _front();
+    T& v_front();
 
-    T& _back();
+    T& v_back();
 
-    T& operator [] (unsigned int n);
+    T& operator [] (const unsigned int n);
 
-    void inserts(T value, int i);
+    void inserts(T value, unsigned int i);
 
     void erases(int n);
+
+    T v_at(unsigned int n); //Returns a reference to the element at specified location, with bounds checking
 
 
     ~Jeni();

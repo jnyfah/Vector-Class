@@ -1,11 +1,36 @@
 #include "Jeni.h"
 #include <iostream>
 #include <string>
+#include<cstdlib>  //for the exit function
+#include <new>
 #include "Jeni.h"
 
 using namespace std;
 
 
+
+
+
+// subErrors function. Displays an error message and *
+// terminates the program when a subscript is out of range.
+
+template<class T>
+void Jeni<T>::subsError()
+{
+    cout << "ERROR: Subscript out of range."<<endl;
+    exit(EXIT_FAILURE);
+}
+
+
+
+// memError function. Displays an error message and *
+// terminates the program when memory allocation fails.
+template<class T>
+void Jeni<T>::memError()
+{
+    cout << "ERROR:Cannot allocate memory"<<endl;
+    exit(EXIT_FAILURE);
+}
 
 
 //constructor
@@ -15,9 +40,15 @@ Jeni<T>::Jeni()
 {
     vsize=0;
     capacity=10;
-    vec_array=new T[capacity];
+    try
+    {
+      vec_array=new T[capacity];
+    }
+    catch(bad_alloc)
+    {
+        memError();
+    }
 }
-
 
 
 
@@ -36,7 +67,7 @@ Jeni<T>::Jeni(const Jeni &obj)
         vec_array=nullptr;
     }
 
-    for(int i=0; i<obj.vsize; i++)
+    for(unsigned int i=0; i<obj.vsize; i++)
     {
         vec_array[i]=obj.vec_array[i];
     }
@@ -47,7 +78,7 @@ Jeni<T>::Jeni(const Jeni &obj)
 //the old array and coping all the old elements into the new elements  and deletes the old array
 //but this will only be done when capacity - elements in the array is equal to 1
 template<class T>
-void Jeni<T>::_reserve(int n)
+void Jeni<T>::v_reserve(int n)
 {
     T* new_array = new T[n];
 
@@ -87,7 +118,7 @@ void Jeni<T>::pushs_back(const T& value)
 
     if((capacity-vsize)<=1)  //increase the capacity if necessary
     {
-        _reserve(2*capacity);
+        v_reserve(2*capacity);
     }
 
     vec_array[vsize]=value;
@@ -110,7 +141,7 @@ void Jeni<T>::pops_back()
 template<class T>
 void Jeni<T>::display()
 {
-    for(int i=0; i<vsize; i++)
+    for(unsigned int i=0; i<vsize; i++)
     {
         cout<<vec_array[i]<<" , ";
     }
@@ -118,7 +149,7 @@ void Jeni<T>::display()
 
 // returns the number of elements in the container.
 template<class T>
-unsigned int Jeni<T>::_size()
+unsigned int Jeni<T>::v_size()
 {
     return vsize;
 }
@@ -126,7 +157,7 @@ unsigned int Jeni<T>::_size()
 
 // returns the capacity of elements in the container.
 template<class T>
-unsigned int Jeni<T>::_capacity()
+unsigned int Jeni<T>::v_capacity()
 {
     return capacity;
 }
@@ -134,9 +165,9 @@ unsigned int Jeni<T>::_capacity()
 
 //Removes all elements from the container
 template<class T>
-void Jeni<T>::_clear()
+void Jeni<T>::v_clear()
 {
-    for(int i=0; i<vsize; i++)
+    for(unsigned int i=0; i<vsize; i++)
     {
         vsize=0;
         capacity=10;
@@ -146,16 +177,20 @@ void Jeni<T>::_clear()
 
 //resizes the container
 template<class T>
-void Jeni<T>:: _resize(unsigned int n)
+void Jeni<T>::v_resize(unsigned int n)
 {
-    vsize=n;
+    if(n<0)
+        subsError();
+    else
+       vsize=n;
+
 }
 
 
 
 //reference to the first element in the container
 template<class T>
-T& Jeni<T>::_front()
+T& Jeni<T>::v_front()
 {
     return vec_array[0];
 }
@@ -163,7 +198,7 @@ T& Jeni<T>::_front()
 
 //reference to the last element in the container
 template<class T>
-T& Jeni<T>::_back()
+T& Jeni<T>::v_back()
 {
     return vec_array[vsize-1];
 }
@@ -173,7 +208,9 @@ T& Jeni<T>::_back()
 template<class T>
 T& Jeni<T>::operator [] (unsigned int n)
 {
-    return vec_array[n];
+
+       return vec_array[n];
+
 }
 
 
@@ -181,18 +218,37 @@ T& Jeni<T>::operator [] (unsigned int n)
 //increases the size of the container by one
 //move elements after the insertion point by one
 template<class T>
-void Jeni<T>::inserts(T value, int i)
+void Jeni<T>::inserts(T value, unsigned int i)
 {
-    vsize++;
-    for(int j=vsize-1; j>i; j--)
+
+    if(i < 0 || i > (vsize+2))   //if subscript is out of bound
+    {
+       subsError();
+    }
+
+    else
+       {
+         vsize++;
+    for(unsigned int j=vsize-1; j>i; j--)
     {
        vec_array[j]=vec_array[j-1] ;
     }
     vec_array[i]=value;
+       }
+
 }
 
 
 
+//Returns a reference to the element at specified location, with bounds checking.
+//If location is not within the range of the container, an exception of type subsError is thrown.
+template<class T>
+T Jeni<T>::v_at(unsigned int n)
+{
+    if (n < 0 || n >= vsize)
+            subsError();
+    return vec_array[n];
+}
 
 // Destructor
 template<class T>

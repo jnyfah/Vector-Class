@@ -1,14 +1,19 @@
 # depslib dependency file v1.0
-1552001839 source:c:\github\vector-class\jeni_vector\jeni.cpp
+1552147725 source:c:\github\vector-class\jeni_vector\jeni.cpp
 	"Jeni.h"
 	<iostream>
 	<string>
+	<cstdlib>
+	<new>
 	"Jeni.h"
 
-1551996447 c:\github\vector-class\jeni_vector\jeni.h
+1552147725 c:\github\vector-class\jeni_vector\jeni.h
 	<iostream>
+	<cstdlib>
+	<new>
 
-1552001839 source:c:\github\vector-class\jeni_vector\main.cpp
+1552144009 source:c:\github\vector-class\jeni_vector\main.cpp
 	<iostream>
+	<cstdlib>
 	"Jeni.h"
 
