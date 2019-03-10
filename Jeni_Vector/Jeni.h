@@ -73,5 +73,6 @@ protected:
 
 
 };
-
+#include "Jeni.tpp"
 #endif // JENI_H
+

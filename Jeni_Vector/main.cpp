@@ -1,7 +1,10 @@
 #include <iostream>
 #include<cstdlib>
 #include "Jeni.h"
+
 using namespace std;
+
+
 
 int main()
 {
@@ -12,11 +15,11 @@ int main()
     vec.pushs_back(67);
     vec.pushs_back(4);
     vec.pushs_back(9);
-    vec.inserts(4,16);
+    vec.inserts(3,4);
+
+   vec.display();
 
 
-
-cout<<vec.v_size();
 
     return 0;
 }

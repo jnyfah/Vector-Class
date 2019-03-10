@@ -1,17 +1,7 @@
-#include "Jeni.h"
-#include <iostream>
-#include <string>
-#include<cstdlib>  //for the exit function
-#include <new>
-#include "Jeni.h"
-
-using namespace std;
 
 
 
-
-
-// subErrors function. Displays an error message and *
+// subErrors function. Displays an error message and
 // terminates the program when a subscript is out of range.
 
 template<class T>
@@ -259,9 +249,4 @@ Jeni<T>::~Jeni()
 }
 
 
-//templates
-template class Jeni<int>;
-template class Jeni<float>;
-template class Jeni<string>;
-template class Jeni<double>;
-template class Jeni<char>;
+
