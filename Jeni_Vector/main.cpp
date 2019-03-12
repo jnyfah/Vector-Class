@@ -1,6 +1,6 @@
 #include <iostream>
 #include<cstdlib>
-#include "Jeni.h"
+#include "Vector.h"
 
 using namespace std;
 
@@ -8,7 +8,8 @@ using namespace std;
 
 int main()
 {
-    Jeni<int>vec;
+    Jeni::Vector<int>vec;
+
     vec.pushs_back(9);
     vec.pushs_back(7);
     vec.pushs_back(8);
@@ -16,8 +17,8 @@ int main()
     vec.pushs_back(4);
     vec.pushs_back(9);
     vec.inserts(3,4);
-
-   vec.display();
+ Jeni::Vector<int>mas(vec);
+  mas.display();
 
 
 
