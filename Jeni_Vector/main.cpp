@@ -17,8 +17,12 @@ int main()
     vec.pushs_back(4);
     vec.pushs_back(9);
     vec.inserts(3,4);
- Jeni::Vector<int>mas(vec);
-  mas.display();
+ Jeni::Vector<int>mas=vec;
+
+  for(auto ptr=mas.v_begin(); ptr!=mas.v_end() ; ++ptr)
+  {
+      cout<<*ptr<<" ";
+  }
 
 
 

@@ -136,13 +136,7 @@ public:
     }
 
 
-    void display()
-    {
-        for(unsigned int i=0; i<vsize; i++)
-        {
-            cout<<vec_array[i]<<" , ";
-        }
-    }
+
 
 // returns the number of elements in the container.
     unsigned int v_size()
