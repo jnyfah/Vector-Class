@@ -3,7 +3,6 @@
 #include <new>
 
 
-
 #ifndef VECTOR_H
 #define VECTOR_H
 
@@ -18,11 +17,11 @@ class Vector
 {
 private:
 
-    unsigned int vsize; //size of vector
+    size_t vsize; //size of vector
 
     T* vec_array;
 
-    int capacity;  // number of elements the array can hold
+    size_t capacity;  // number of elements the array can hold
 
 
     void subsError()
@@ -88,7 +87,7 @@ public:
     {
         T* new_array = new T[n];
 
-        for(int i= 0; i< capacity; i++) // copy the elements to new array
+        for(size_t i= 0; i< capacity; i++) // copy the elements to new array
         {
             new_array[i]=vec_array[i];
         }
@@ -139,14 +138,14 @@ public:
 
 
 // returns the number of elements in the container.
-    unsigned int v_size()
+    size_t v_size()
     {
         return vsize;
     }
 
 
 // returns the capacity of elements in the container.
-    unsigned int v_capacity()
+    size_t v_capacity()
     {
         return capacity;
     }
@@ -155,7 +154,7 @@ public:
 //Removes all elements from the container
     void v_clear()
     {
-        for(unsigned int i=0; i<vsize; i++)
+        for(size_t i=0; i<vsize; i++)
         {
             vsize=0;
             capacity=10;
@@ -164,7 +163,7 @@ public:
 
 
 //resizes the container
-    void v_resize(unsigned int n)
+    void v_resize(size_t n)
     {
         if(n<0)
             subsError();
@@ -172,7 +171,6 @@ public:
             vsize=n;
 
     }
-
 
 
 //reference to the first element in the container
@@ -192,8 +190,13 @@ public:
 //Returns a reference to the element at specified location
 
 
-    const T& operator [] (unsigned int n)
+    const T& operator [] (size_t n)
     {
+
+        if(n < 0 || n > vsize)   //if subscript is out of bound
+        {
+            subsError();
+        }
 
         return vec_array[n];
 
@@ -204,6 +207,7 @@ public:
 //Replaces the contents of the container
     Vector& operator = (const Vector &obj)
     {
+
         vsize= obj.vsize;
         capacity=obj.capacity;
 
@@ -221,7 +225,7 @@ public:
 //inserting at any location
 //increases the size of the container by one
 //move elements after the insertion point by one
-    void inserts(T value, unsigned int i)
+    void inserts(T value, size_t i)
     {
 
         if(i < 0 || i > (vsize+2))   //if subscript is out of bound
@@ -232,7 +236,7 @@ public:
         else
         {
             vsize++;
-            for(unsigned int j=vsize-1; j>i; j--)
+            for(size_t j=vsize-1; j>i; j--)
             {
                 vec_array[j]=vec_array[j-1] ;
             }
@@ -245,7 +249,7 @@ public:
 
 //Returns a reference to the element at specified location, with bounds checking.
 //If location is not within the range of the container, an exception of type subsError is thrown.
-    T v_at(unsigned int n)
+    T v_at(size_t n)
     {
         if (n < 0 || n >= vsize)
             subsError();
@@ -267,11 +271,10 @@ public:
 
 
 //  Returns an iterator to the element following the last element of the container.
-    const T* v_end() const
+    T* v_end() const
     {
         return  vec_array + vsize;
     }
-
 
     //when reverse transversing through the container, use the decrement pointer
 //  Returns a constant iterator to the element following the last element of the container.
@@ -305,6 +308,48 @@ public:
         return  vec_array-1;
     }
 
+
+//Exchanges the contents of the container with those of other
+    void v_swap( Vector<T>& obj )
+    {
+
+
+        size_t temp = vsize;
+        vsize=obj.vsize;
+        obj.vsize=temp;
+
+        T* temps= vec_array;
+        vec_array=obj.vec_array;
+        obj.vec_array=temps;
+    }
+
+
+
+    //Compares the contents of two containers.
+
+    friend bool operator == <T>( const Vector<T>&, const  Vector<T>& );
+
+
+
+//Compares the contents of two containers
+    friend bool operator != (const Vector<T>&, const Vector<T>& );
+
+
+
+
+    //Compares the contents of two containers
+    friend bool operator < (const Vector<T>&  first, const Vector<T>& second);
+
+//Compares the contents of two containers
+    friend bool operator <= (const Vector<T>&  first, const Vector<T>& second);
+
+//Compares the contents of two containers
+    friend bool operator > (const Vector<T>&  first, const Vector<T>& second);
+
+//Compares the contents of two containers
+    friend bool operator >= (const Vector<T>&  first, const Vector<T>& second);
+
+
 //Destructor
     ~Vector()
     {
@@ -314,10 +359,37 @@ public:
     }
 
 
-protected:
+
+
 
 
 };
+
+template<class T>
+bool operator == ( Vector<T>&  first,  Vector<T>& second)
+{
+    if(first.vsize!=second.vsize)
+    {
+        return false;
+    }
+    else
+    {
+        for(int i=0; i<first.vsize; ++i)
+        {
+            if(first[i]!=second[i]);
+            return false;
+        }
+    }
+
+    return true;
+}
+
+
+template<class T>
+bool operator != (const Vector<T>&  first, const Vector<T>& second)
+{
+    return !(first==second);
+}
 
 
 
