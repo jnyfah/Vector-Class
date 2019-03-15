@@ -1,6 +1,7 @@
 #include <iostream>
 #include<cstdlib>
 #include <new>
+#include<algorithm>
 
 
 #ifndef VECTOR_H
@@ -225,7 +226,7 @@ public:
 //inserting at any location
 //increases the size of the container by one
 //move elements after the insertion point by one
-    void inserts(T value, size_t i)
+    void inserts(size_t i,T value)
     {
 
         if(i < 0 || i > (vsize+2))   //if subscript is out of bound
@@ -327,27 +328,110 @@ public:
 
     //Compares the contents of two containers.
 
-    friend bool operator == <T>( const Vector<T>&, const  Vector<T>& );
+  friend  bool operator == ( Vector<T>&  first,  Vector<T>& second)
+{
+    if(first.vsize!=second.vsize)
+    {
+        return false;
+    }
+    else
+    {
+        for(size_t i=0; i<first.vsize; ++i)
+        {
+            if(first[i]!=second[i]);
+            return false;
+        }
+    }
 
-
+    return true;
+}
 
 //Compares the contents of two containers
-    friend bool operator != (const Vector<T>&, const Vector<T>& );
+
+friend bool operator != ( Vector<T>&  first,  Vector<T>& second)
+{
+    return !(first == second);
+}
 
 
 
 
-    //Compares the contents of two containers
-    friend bool operator < (const Vector<T>&  first, const Vector<T>& second);
+  //Compares the contents of two containers
+    friend bool operator < ( Vector<T>&  first,  Vector<T>& second)
+    {
+        if(first.status()&&second.status())
+        {
+            return false;
+        }
+        else if (first.status())
+        {
+            return true;
+        }
+        else if(second.status())
+        {
+            return false;
+
+        }
+        else if(first.vsize==second.vsize)
+        {
+
+            if(first[0]<second[0])
+                return true;
+            else
+                return false;
+
+        }
+        else if(first.vsize<second.vsize)
+            return true;
+        else
+            return false;
+
+
+    }
 
 //Compares the contents of two containers
-    friend bool operator <= (const Vector<T>&  first, const Vector<T>& second);
+    friend bool operator <=  ( Vector<T>&  first,  Vector<T>& second)
+    {
+        if(first.status()&&second.status())
+        {
+            return false;
+        }
+        else if (first.status())
+        {
+            return true;
+        }
+        else if(second.status())
+        {
+            return false;
+
+        }
+        else if(first.vsize==second.vsize)
+        {
+            if(first[0]<=second[0])
+                return true;
+            else
+                return false;
+
+        }
+        else if(first.vsize<second.vsize)
+            return true;
+        else
+            return false;
+
+
+    }
+
+  //Compares the contents of two containers
+    friend bool operator >  ( Vector<T>&  first,  Vector<T>& second)
+    {
+        return !(first<=second);
+    }
 
 //Compares the contents of two containers
-    friend bool operator > (const Vector<T>&  first, const Vector<T>& second);
-
-//Compares the contents of two containers
-    friend bool operator >= (const Vector<T>&  first, const Vector<T>& second);
+    friend bool operator >= ( Vector<T>&  first,  Vector<T>& second)
+    {
+        return !(first<=second);
+    }
 
 
 //Destructor
@@ -365,31 +449,9 @@ public:
 
 };
 
-template<class T>
-bool operator == ( Vector<T>&  first,  Vector<T>& second)
-{
-    if(first.vsize!=second.vsize)
-    {
-        return false;
-    }
-    else
-    {
-        for(int i=0; i<first.vsize; ++i)
-        {
-            if(first[i]!=second[i]);
-            return false;
-        }
-    }
-
-    return true;
-}
 
 
-template<class T>
-bool operator != (const Vector<T>&  first, const Vector<T>& second)
-{
-    return !(first==second);
-}
+
 
 
 

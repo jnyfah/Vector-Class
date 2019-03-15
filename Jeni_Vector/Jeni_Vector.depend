@@ -12,15 +12,16 @@
 	<new>
 	"Jeni.tpp"
 
-1552567245 source:c:\github\vector-class\jeni_vector\main.cpp
+1552612223 source:c:\github\vector-class\jeni_vector\main.cpp
 	<iostream>
 	<cstdlib>
 	"Vector.h"
 
 1552167207 c:\github\vector-class\jeni_vector\jeni.tpp
 
-1552567377 c:\github\vector-class\jeni_vector\vector.h
+1552613356 c:\github\vector-class\jeni_vector\vector.h
 	<iostream>
 	<cstdlib>
 	<new>
+	<algorithm>
 
