@@ -2,6 +2,8 @@
 #include<cstdlib>
 #include <new>
 #include<algorithm>
+#include "Iter.h"
+
 
 
 #ifndef VECTOR_H
@@ -43,6 +45,8 @@ private:
 
 
 public:
+    friend class Iter<T>;
+
     Vector()
     {
         vsize=0;
@@ -177,6 +181,8 @@ public:
 //reference to the first element in the container
     T& v_front()
     {
+        if(status())
+            subsError();
         return vec_array[0];
     }
 
@@ -184,6 +190,9 @@ public:
 //reference to the last element in the container
     T& v_back()
     {
+        if(status())
+            subsError();
+
         return vec_array[vsize-1];
     }
 
@@ -224,27 +233,31 @@ public:
 
 
 //inserting at any location
-//increases the size of the container by one
+//increases the size of the container if necessary
 //move elements after the insertion point by one
-    void inserts(size_t i,T value)
+    Iter<T> inserts(Iter<T> n,const T& value)
     {
+        int i=0;
 
-        if(i < 0 || i > (vsize+2))   //if subscript is out of bound
+        if((capacity-vsize)<=1)  //increase the capacity if necessary
         {
-            subsError();
+            v_reserve(2*capacity);
         }
-
-        else
+        for(Iter<T>it = v_end(); it!=n; it--)
         {
-            vsize++;
-            for(size_t j=vsize-1; j>i; j--)
-            {
-                vec_array[j]=vec_array[j-1] ;
-            }
-            vec_array[i]=value;
+            i++;
+            vec_array[vsize-1]=vec_array[vsize-i-1];
         }
+        *n=value;
+        vsize++;
 
     }
+
+
+
+
+
+
 
 
 
@@ -259,54 +272,70 @@ public:
 
 
 //Returns an iterator to the first element of the container
-    T* v_begin()
-    {
-        return  vec_array;
-    }
 
-//Returns a constant iterator to the first element of the container
-    const T* v_cbegin() const
+    Iter<T>v_begin()
     {
-        return  vec_array;
+        Iter<T>temp;
+        temp=vec_array;
+        return temp;
+    }
+//Returns a constant iterator to the first element of the container
+    const Iter<T> v_cbegin() const
+    {
+        Iter<T>temp;
+        temp=vec_array;
+        return temp;
     }
 
 
 //  Returns an iterator to the element following the last element of the container.
-    T* v_end() const
+    Iter<T> v_end() const
     {
-        return  vec_array + vsize;
+        Iter<T>temp;
+        temp= vec_array + vsize;
+        return temp;
     }
 
     //when reverse transversing through the container, use the decrement pointer
 //  Returns a constant iterator to the element following the last element of the container.
-    T* v_cend()
+    const Iter<T> v_cend() const
     {
-        return  vec_array + vsize;
+        Iter<T>temp;
+        temp= vec_array + vsize;
+        return temp;
     }
 
 //Returns an iterator to the element following the last element of the container.
-    T* v_rbegin()
+    Iter<T> v_rbegin()
     {
-        return  vec_array + (vsize-1);
+        Iter<T>temp;
+        temp= vec_array + (vsize-1);
+        return temp;
     }
 
     //Returns a constant iterator to the element following the last element of the container.
-    const T* v_crbegin() const
+    const Iter<T> v_crbegin() const
     {
-        return  vec_array + (vsize-1);
+        Iter<T>temp;
+        temp= vec_array + (vsize-1);
+        return temp;
     }
 
 
 //Returns an iterator to the first element of the container
-    T* v_rend()
+    Iter<T> v_rend()
     {
-        return  vec_array-1;
+        Iter<T>temp;
+        temp=  vec_array-1;
+        return temp;
     }
 
     //Returns a constant iterator to the first element of the container
-    const T* v_crend() const
+    const Iter<T> v_crend() const
     {
-        return  vec_array-1;
+        Iter<T>temp;
+        temp=  vec_array-1;
+        return temp;
     }
 
 
@@ -328,35 +357,35 @@ public:
 
     //Compares the contents of two containers.
 
-  friend  bool operator == ( Vector<T>&  first,  Vector<T>& second)
-{
-    if(first.vsize!=second.vsize)
+    friend  bool operator == ( Vector<T>&  first,  Vector<T>& second)
     {
-        return false;
-    }
-    else
-    {
-        for(size_t i=0; i<first.vsize; ++i)
+        if(first.vsize!=second.vsize)
         {
-            if(first[i]!=second[i]);
             return false;
         }
-    }
+        else
+        {
+            for(size_t i=0; i<first.vsize; ++i)
+            {
+                if(first[i]!=second[i]);
+                return false;
+            }
+        }
 
-    return true;
-}
+        return true;
+    }
 
 //Compares the contents of two containers
 
-friend bool operator != ( Vector<T>&  first,  Vector<T>& second)
-{
-    return !(first == second);
-}
+    friend bool operator != ( Vector<T>&  first,  Vector<T>& second)
+    {
+        return !(first == second);
+    }
 
 
 
 
-  //Compares the contents of two containers
+    //Compares the contents of two containers
     friend bool operator < ( Vector<T>&  first,  Vector<T>& second)
     {
         if(first.status()&&second.status())
@@ -421,7 +450,7 @@ friend bool operator != ( Vector<T>&  first,  Vector<T>& second)
 
     }
 
-  //Compares the contents of two containers
+    //Compares the contents of two containers
     friend bool operator >  ( Vector<T>&  first,  Vector<T>& second)
     {
         return !(first<=second);
@@ -432,6 +461,52 @@ friend bool operator != ( Vector<T>&  first,  Vector<T>& second)
     {
         return !(first<=second);
     }
+
+
+    //erasing a
+    Iter<T> v_erase(Iter<T> n)
+    {
+        int i=0;
+        for(auto it = (*this).v_begin(); it != n; it++) //get number of elements before the item to be deleted
+        {
+            i++;
+        }
+        for(auto it = n+1; it != (*this).v_end(); it++)
+        {
+            i++;
+            vec_array[i]=vec_array[i+1];
+        }
+        vsize--;
+        return n;
+
+    }
+
+
+
+    Iter<T> v_erase(Iter<T> first, Iter<T> last )
+    {
+        int i=0;
+        int j=0;
+        for(auto it = (*this).v_begin(); it != first; it++) //get number of elements before the item to be deleted
+        {
+            i++;
+        }
+        for(auto it = first; it != last; it++) //get number of elements inbetween the range to be deleted
+        {
+            j++;
+        }
+        for(auto it = last; it != (*this).v_end(); it++)
+        {
+            i++;
+            vec_array[i]=vec_array[i+1];
+        }
+        vsize-=j;
+        return last;
+
+    }
+
+
+
 
 
 //Destructor
