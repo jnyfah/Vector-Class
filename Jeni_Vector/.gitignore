@@ -3,3 +3,5 @@ bin/*
 debug/*
 obj/*
 *.out
+Jeni_Vector.layout
+Jeni_Vector.depend
