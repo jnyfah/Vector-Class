@@ -32,10 +32,7 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
-		<Unit filename="Jeni.h" />
-		<Unit filename="Jeni.tpp">
-			<Option target="&lt;{~None~}&gt;" />
-		</Unit>
+		<Unit filename="Iter.h" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />

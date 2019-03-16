@@ -36,27 +36,27 @@ public:
 //Compares the contents of two containers.
     bool operator == (const Iter<T>& other)
     {
-        return (ptr==other.ptr);
+        return (ptr == other.ptr);
     }
     bool operator != (const Iter<T>& other)
     {
-        return (ptr!=other.ptr);
+        return (ptr != other.ptr);
     }
     bool operator < (const Iter<T>& other)
     {
-        return (ptr<other.ptr);
+        return (ptr < other.ptr);
     }
     bool operator <= (const Iter<T>& other)
     {
-        return (ptr<=other.ptr);
+        return (ptr <= other.ptr);
     }
     bool operator > (const Iter<T>& other)
     {
-        return (ptr>other.ptr);
+        return (ptr > other.ptr);
     }
     bool operator >= (const Iter<T>& other)
     {
-        return (ptr>=other.ptr);
+        return (ptr >= other.ptr);
     }
 
     const T& operator [] (size_t n)
@@ -89,10 +89,16 @@ public:
         return *this;
     }
 
-    Iter operator *()
+    T& operator *()
     {
 
         return *ptr;
+    }
+
+    T& operator [](int n)
+    {
+
+        return *(ptr+n);
     }
 
     ~Iter()
