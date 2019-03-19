@@ -248,31 +248,93 @@ public:
 //inserting at any location
 //increases the size of the container if necessary
 //move elements after the insertion point by one
-    Iter<T> inserts(Iter<T> n,const T& value)
+    void insert(Iter<T> n, const T& value)
     {
-        int i = 0;
+        int i = vsize;
 
         if((capacity-vsize) <= 1)  //increase the capacity if necessary
         {
             v_reserve ( 2*capacity );
         }
 
-        for(Iter<T>it = end(); it != n; --it)
+        for(Iter<T>it = end(); it != n; it--)
         {
-            ++i;
-            vec_array [vsize-1] = vec_array [vsize-i-1];
+            i--;
+            vec_array [i+1] = vec_array [i];
+
         }
 
         *n = value;
-        ++ vsize;
+        vsize++;
+
+    }
+
+
+// inserts count copies of the value before pos
+
+    void insert(Iter<T> n, size_t counts, const T& value)
+    {
+        int i = vsize;
+
+        if((capacity - vsize) < counts )  //increase the capacity if necessary
+        {
+            v_reserve ( 2*capacity );
+        }
+
+        for(Iter<T>it = end(); it != n; it--)
+        {
+            i--;
+            vec_array [ i + counts ] = vec_array [i];
+
+        }
+        for( size_t j = 0; j < counts; j++)
+        {
+            vec_array[ i+j ] = value;
+        }
+
+
+        vsize += value;
 
     }
 
 
 
+    void insert(Iter<T> pos, Iter<T> first, Iter<T> last )
+    {
+        size_t i=0, n=0;
+        size_t j = vsize;
 
+        for(auto it = first; it!=last; it++)
+        {
+            i++;
+        }
+        if((capacity - vsize) < i )  //increase the capacity if necessary
+        {
+            v_reserve ( 2*capacity );
+        }
+        T* temp = new T[i];
 
+        for(auto it = first; it!=last; it++)
+        {
+            temp[n] = *it ;
+            n++;
+        }
 
+        for(Iter<T>it = end(); it != pos; it--)
+        {
+            j--;
+            vec_array [j+i] = vec_array [j];
+
+        }
+
+        for( size_t n = 0; n < i; n++)
+        {
+            vec_array[ j + n ]=temp[n];
+        }
+        vsize+=i;
+        delete []temp;
+
+    }
 
 
 
@@ -425,7 +487,7 @@ public:
     //Compares the contents of two containers
     friend bool operator < ( Vector<T>&  first,  Vector<T>& second)
     {
-        if(first.empty()&&second.empty())
+        if(first.empty() && second.empty())
         {
             return false;
         }
@@ -461,7 +523,7 @@ public:
 //Compares the contents of two containers
     friend bool operator <=  ( Vector<T>&  first,  Vector<T>& second)
     {
-        if(first.empty()&&second.empty())
+        if(first.empty() && second.empty())
         {
             return false;
         }
@@ -493,13 +555,13 @@ public:
     //Compares the contents of two containers
     friend bool operator >  ( Vector<T>&  first,  Vector<T>& second)
     {
-        return !(first<=second);
+        return !(first <= second);
     }
 
 //Compares the contents of two containers
     friend bool operator >= ( Vector<T>&  first,  Vector<T>& second)
     {
-        return !(first<=second);
+        return !(first <= second);
     }
 
 
@@ -507,14 +569,15 @@ public:
     Iter<T> erase(Iter<T> n)
     {
         int i=0;
-        for(auto it = (*this).begin(); it != n; ++it) //get number of elements before the item to be deleted
+        for(auto it = (*this).begin(); it != n; it++) //get number of elements before the item to be deleted
         {
-            ++i;
+            i++;
         }
-        for(auto it = n+1; it != (*this).end(); ++it)
+        for(auto it = n+1; it != (*this).end(); it++)
         {
-            ++i;
-            vec_array[i]=vec_array[i+1];
+
+            vec_array[i] = vec_array[i+1];
+            i++;
         }
         vsize--;
         return n;
@@ -537,10 +600,11 @@ public:
         {
             ++j;
         }
-        for(auto it = last; it != (*this).end(); ++it)
+        for(auto it = last; it != (*this).end(); it++)
         {
+
+            vec_array[i] = vec_array[i+1];
             ++i;
-            vec_array[i]=vec_array[i+1];
         }
         vsize -= j;
 
@@ -549,7 +613,23 @@ public:
     }
 
 
+    void assign(size_t counts, const T& value)
+    {
+        if (counts < 0)
+        {
+            subsError();
+        }
+        if((capacity - vsize) < counts )  //increase the capacity if necessary
+        {
+            v_reserve ( 2*capacity );
+        }
 
+        vsize=counts;
+        for(size_t i = 0; i<vsize; i++)
+        {
+            vec_array[i] = value;
+        }
+    }
 
 
 //Destructor

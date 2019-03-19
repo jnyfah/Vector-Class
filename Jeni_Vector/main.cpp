@@ -1,5 +1,6 @@
 #include <iostream>
 #include<cstdlib>
+#include<algorithm>
 #include "Vector.h"
 #include "Iter.h"
 
@@ -14,21 +15,29 @@ int main()
     Jeni::Iter<int>it;
 
 
-    vec.push_back(9);
-    vec.push_back(7);
-    vec.push_back(8);
-    vec.push_back(67);
-    vec.push_back(4);
-    vec.push_back(2);
-     vec.erase(vec.begin(),vec.begin()+1);
-
-
-
-    cout<<vec.at(3);
-
-    for(it=vec.begin(); it!=vec.end(); ++it)
+    // iterator invalidation
+   for(int i = 1; i < 10; i++)
     {
-        cout<<*it<<endl;
+        vec.push_back(i);
+    }
+
+    it = vec.begin();
+
+    for(; it != vec.end(); it++)
+    {
+        cout << (*it) << " ";
+    }
+
+    cout << endl;
+
+    it = vec.begin();
+
+    vec.insert( it+2, 200 );
+
+    for(; it != vec.end(); it++)
+    {
+        cout << (*it)<<" ";
+
     }
 
 }

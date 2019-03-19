@@ -77,13 +77,24 @@ public:
         temp= ptr-n;
         return temp;
     }
-    Iter operator ++()
+    Iter operator ++() //prefix notation
+    {
+        ptr++;
+        return *this;
+    }
+    Iter operator ++(int) //postfix notation
     {
         ptr++;
         return *this;
     }
 
-    Iter operator --()
+    Iter operator --() //prefix notation
+    {
+        ptr--;
+        return *this;
+    }
+
+     Iter operator --(int)
     {
         ptr--;
         return *this;

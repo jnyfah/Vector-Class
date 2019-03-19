@@ -1,33 +1,19 @@
 # depslib dependency file v1.0
-1552163008 source:c:\github\vector-class\jeni_vector\jeni.cpp
-	<iostream>
-	<string>
-	<cstdlib>
-	<new>
-	"Jeni.h"
-
-1552166720 c:\github\vector-class\jeni_vector\jeni.h
+1552959788 source:c:\github\vector-class\jeni_vector\main.cpp
 	<iostream>
 	<cstdlib>
-	<new>
-	"Jeni.tpp"
-
-1552737891 source:c:\github\vector-class\jeni_vector\main.cpp
-	<iostream>
-	<cstdlib>
+	<algorithm>
 	"Vector.h"
 	"Iter.h"
 
-1552167207 c:\github\vector-class\jeni_vector\jeni.tpp
-
-1552738051 c:\github\vector-class\jeni_vector\vector.h
+1552959824 c:\github\vector-class\jeni_vector\vector.h
 	<iostream>
 	<cstdlib>
 	<new>
 	<algorithm>
 	"Iter.h"
 
-1552689745 c:\github\vector-class\jeni_vector\iter.h
+1552910690 c:\github\vector-class\jeni_vector\iter.h
 	<iostream>
 	<cstdlib>
 	<new>
